@@ -11,6 +11,16 @@
 | `multi/` | 猜词 · 五端局域网 | 4+（红/蓝队长、红/蓝队员、观察者） | 8010 | `python multi/server.py` |
 | `avalon/` | 阿瓦隆 · 隐藏身份推理 | 5–10（动态人数） | 8020 | `python avalon/server.py` |
 
+## 预览
+
+**猜词 · 词影迷踪**
+
+<div align="center"><img src="caici.png" alt="词影迷踪" width="720"></div>
+
+**阿瓦隆 · 隐藏身份推理**
+
+<div align="center"><img src="avalon.png" alt="阿瓦隆" width="720"></div>
+
 ## 快速开始
 
 需要 Python 3.11+ 和 `aiohttp`：
