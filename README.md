@@ -1,6 +1,6 @@
 # 词影迷踪 · 阿瓦隆
 
-两套局域网联机游戏合集：**猜词**（词影迷踪，单机 / 双机 / 五人版）与 **阿瓦隆**（隐藏身份推理）。纯前端 + Python（aiohttp WebSocket）服务端，无构建步骤、开箱即玩。
+两套局域网联机游戏合集：**猜词**（词影迷踪，单机 / 双机 / 五端版）与 **阿瓦隆**（隐藏身份推理）。纯前端 + Python（aiohttp WebSocket）服务端，无构建步骤、开箱即玩。
 
 ## 子项目
 
@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- |
 | 根目录 | 猜词 · 单机版 | 1 | — | 直接用浏览器打开 `index.html` |
 | `lan/` | 猜词 · 双机局域网 | 2（队长 + 队员） | 8000 | `python lan/server.py` |
-| `multi/` | 猜词 · 五人局域网 | 5（红/蓝队长、红/蓝队员、观察者） | 8010 | `python multi/server.py` |
+| `multi/` | 猜词 · 五端局域网 | 4+（红/蓝队长、红/蓝队员、观察者） | 8010 | `python multi/server.py` |
 | `avalon/` | 阿瓦隆 · 隐藏身份推理 | 5–10（动态人数） | 8020 | `python avalon/server.py` |
 
 ## 快速开始
@@ -29,7 +29,7 @@ python lan/server.py                   # 例：启动双机版，默认监听 0.
 
 - `role.md` —— 猜词通用规则
 - `lan/README.md` —— 双机版
-- `multi/README.md` —— 五人版
+- `multi/README.md` —— 五端版
 - `avalon/README.md`、`avalon/role.md` —— 阿瓦隆（含深水局房规）
 
 ## 词库
