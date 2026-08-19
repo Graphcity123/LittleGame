@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>阿瓦隆 · 5-10 人局域网</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/avalon.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">阿瓦</div>
+      <div>
+        <h1>阿瓦隆</h1>
+        <p>5-10 人局域网 · 隐藏身份推理</p>
+      </div>
+    </div>
+    <span id="phaseLabel" class="phase-label hidden"></span>
+    <div class="topbar-actions">
+      <span id="nicknameBadge" class="nickname-badge hidden"></span>
+    </div>
+  </header>
+
+  <!-- 落地页：填写昵称 -->
+  <section id="landing" class="center-panel">
+    <div class="card">
+      <h2>填写昵称加入游戏</h2>
+      <p>在大厅设定游戏人数（5-10 人），满员后任意一人可开始；系统将随机分配座位与身份。</p>
+      <input id="nickname" class="text-input" maxlength="12" placeholder="你的昵称（最长 12 字）">
+      <button id="joinBtn" class="button button-primary button-block">加入游戏</button>
+    </div>
+  </section>
+
+  <!-- 大厅：等待玩家 -->
+  <section id="lobby" class="center-panel hidden">
+    <div class="card">
+      <h2 id="lobbyTitle">等待玩家加入</h2>
+      <p id="lobbyDetail"></p>
+      <div class="lobby-count-row">
+        <label for="lobbyCount">游戏人数</label>
+        <select id="lobbyCount">
+          <option value="5">5 人</option>
+          <option value="6" selected>6 人</option>
+          <option value="7">7 人</option>
+          <option value="8">8 人</option>
+          <option value="9">9 人</option>
+          <option value="10">10 人</option>
+        </select>
+      </div>
+      <div class="lobby-count-row">
+        <label for="lobbyDeepWater">深水局</label>
+        <input type="checkbox" id="lobbyDeepWater" class="lobby-deep-check">
+        <span class="lobby-deep-hint">湖中仙女 + 兰斯洛特</span>
+      </div>
+      <div id="lobbyPlayers" class="lobby-players"></div>
+      <button id="lobbyStartBtn" class="button button-primary button-block hidden">开始游戏</button>
+    </div>
+  </section>
+
+  <!-- 游戏 -->
+  <section id="game" class="hidden">
+    <div id="connectionBanner" class="connection-banner"></div>
+
+    <!-- 顶部常显信息栏：轮次轨道 / 编号对应人物 / 自己的身份 -->
+    <div class="status-bar">
+      <div class="status-block">
+        <div class="status-label" id="roundLabel">任务轮次</div>
+        <div id="roundTrack" class="round-track"></div>
+      </div>
+
+      <div class="status-block">
+        <div class="status-label" id="seatMapLabel">编号对应人物</div>
+        <div id="seatMap" class="seat-map"></div>
+      </div>
+    </div>
+
+    <!-- 交互区：主框为任务执行页，副框为身份 + 事件记录 -->
+    <div class="layout">
+      <div class="control-column">
+        <div class="panel">
+          <div class="panel-heading"><h2>我的身份</h2></div>
+          <div id="myIdentity" class="my-identity-status"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-heading"><h2>事件记录</h2></div>
+          <ul id="history" class="event-list"></ul>
+        </div>
+      </div>
+
+      <div class="main-column">
+        <div id="phasePanel" class="panel phase-panel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 结算 -->
+  <div id="winnerOverlay" class="overlay hidden">
+    <div class="winner-card avalon-winner-card">
+      <div class="winner-crown">对局结束</div>
+      <h2 id="winnerTitle"></h2>
+      <p id="winnerDetail"></p>
+      <div class="reveal-label">全员身份复盘</div>
+      <div id="roleReveal" class="role-reveal"></div>
+      <div class="winner-actions">
+        <button id="reviewBtn" class="button button-secondary">复盘</button>
+        <button id="resetBtn" class="button button-primary">再来一局</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 二次确认 -->
+  <div id="confirmOverlay" class="overlay hidden">
+    <div class="winner-card avalon-winner-card confirm-card">
+      <h2 id="confirmTitle"></h2>
+      <p id="confirmDetail"></p>
+      <div class="winner-actions">
+        <button id="confirmCancelBtn" class="button">取消</button>
+        <button id="confirmOkBtn" class="button vote-fail">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 投票结果醒目提示 -->
+  <div id="resultOverlay" class="result-overlay hidden">
+    <div id="resultCard" class="result-card">
+      <div id="resultKind" class="result-kind"></div>
+      <div id="resultStatus" class="result-status"></div>
+      <div id="resultCounts" class="result-counts"></div>
+    </div>
+  </div>
+
+  <!-- 轮次详情 -->
+  <div id="roundDetailOverlay" class="overlay hidden">
+    <div class="winner-card round-detail-card">
+      <div class="winner-crown">轮次详情</div>
+      <h2 id="roundDetailTitle"></h2>
+      <div id="roundDetailBody" class="round-detail-body"></div>
+      <div class="winner-actions">
+        <button id="roundDetailCloseBtn" class="button button-primary">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 复盘返回结算 -->
+  <button id="reviewBackBtn" class="review-back-btn hidden">返回结算</button>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/game.js"></script>
+</body>
+</html>

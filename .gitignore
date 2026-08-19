@@ -1,0 +1,21 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# --- 备份与临时文件 ---
+*.bak
+*.tmp
+*~
+
+# --- Claude Code 本地配置与记忆 ---
+.claude/
+AGENTS.md
+
+# --- 系统 / 编辑器 ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

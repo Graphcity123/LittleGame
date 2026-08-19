@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>词影迷踪</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">红蓝</div>
+      <div>
+        <h1>词影迷踪</h1>
+        <p>红蓝队长猜词对战</p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button id="toggleCaptain" class="button button-secondary" type="button">队长视野</button>
+      <button id="newGameBtn" class="button button-primary" type="button">AI 新词局</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="scoreboard" aria-label="战况">
+      <div class="score-card score-red">
+        <span class="score-team">红队</span>
+        <strong id="redScore">0/9</strong>
+      </div>
+      <div class="turn-card">
+        <span id="turnBanner">红队回合</span>
+        <span id="phaseHint">等待队长提示</span>
+      </div>
+      <div class="score-card score-blue">
+        <span class="score-team">蓝队</span>
+        <strong id="blueScore">0/8</strong>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="control-column">
+        <div class="panel" id="controlPanel">
+          <div class="panel-heading">
+            <span class="status-dot" aria-hidden="true"></span>
+            <h2 id="controlTitle">红队队长提示</h2>
+          </div>
+
+          <div class="clue-form">
+            <label class="field field-wide" for="clueWord">
+              <span>提示词</span>
+              <input id="clueWord" type="text" maxlength="8" autocomplete="off" placeholder="例：圆">
+            </label>
+            <label class="field" for="clueCount">
+              <span>数量</span>
+              <select id="clueCount" aria-label="提示数量">
+                <option value="0">0</option>
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+              </select>
+            </label>
+            <button id="clueSubmit" class="button button-primary button-block field-wide" type="button">提交提示</button>
+          </div>
+
+          <div class="guess-stats">
+            <div>
+              <span>本回合已翻</span>
+              <strong id="flipProgress">0</strong>
+            </div>
+            <div>
+              <span>可翻上限</span>
+              <strong id="flipLimit">1</strong>
+            </div>
+          </div>
+
+          <button id="passBtn" class="button button-ghost button-block" type="button" disabled>弃权 / 结束回合</button>
+        </div>
+
+        <div class="panel captain-panel hidden" id="captainCard">
+          <div class="panel-heading panel-heading-dark">
+            <h2>队长秘密卡</h2>
+            <span>仅队长查看</span>
+          </div>
+          <div class="legend">
+            <span class="legend-item legend-red"><i aria-hidden="true"></i>红方目标</span>
+            <span class="legend-item legend-blue"><i aria-hidden="true"></i>蓝方目标</span>
+            <span class="legend-item legend-bomb"><i aria-hidden="true"></i>炸弹</span>
+            <span class="legend-item legend-neutral"><i aria-hidden="true"></i>无效词</span>
+          </div>
+        </div>
+
+        <div class="panel event-panel">
+          <div class="panel-heading">
+            <h2>双方提示</h2>
+          </div>
+          <div class="clue-log">
+            <div class="clue-column clue-column-red">
+              <h3>红队提示</h3>
+              <ol id="redClueLog" class="event-list"></ol>
+            </div>
+            <div class="clue-column clue-column-blue">
+              <h3>蓝队提示</h3>
+              <ol id="blueClueLog" class="event-list"></ol>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="board-section" aria-label="词板">
+        <div id="board" class="word-grid"></div>
+        <p class="board-foot">红方 9 目标 · 蓝方 8 目标 · 炸弹 1 · 无效 7</p>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="winnerOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="winnerTitle">
+    <div class="winner-card">
+      <span class="winner-crown" aria-hidden="true">◆ ◆ ◆</span>
+      <h2 id="winnerTitle">红队胜利</h2>
+      <p id="winnerDetail">目标词已全部翻开</p>
+      <div class="winner-actions">
+        <button id="viewCaptainBtn" class="button button-secondary" type="button">查看队长视角</button>
+        <button id="replayBtn" class="button button-primary" type="button">再来一局</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

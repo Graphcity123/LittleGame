@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>词影迷踪 · 局域网双端</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="lan.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">红蓝</div>
+      <div>
+        <h1>词影迷踪</h1>
+        <p>局域网双端猜词</p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span id="roleBadge" class="role-badge"></span>
+      <button id="newGameBtn" class="button button-primary hidden" type="button">AI 新词局</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="landing" class="landing-panel">
+      <div class="landing-card">
+        <span class="landing-kicker">局域网双端</span>
+        <h1>词影迷踪</h1>
+        <p>队长电脑和队员电脑分别打开一端，连接后开始对局。</p>
+        <div class="role-grid">
+          <a class="role-card role-card-captain" href="./?role=captain">
+            <span class="role-icon" aria-hidden="true">秘</span>
+            <strong>队长端</strong>
+            <small>查看全部颜色并提交提示</small>
+          </a>
+          <a class="role-card role-card-member" href="./?role=member">
+            <span class="role-icon" aria-hidden="true">翻</span>
+            <strong>队员端</strong>
+            <small>隐藏颜色并翻词</small>
+          </a>
+        </div>
+        <p id="originUrl" class="url-hint"></p>
+      </div>
+    </section>
+
+    <section id="game" class="hidden">
+      <div id="connectionBanner" class="connection-banner"></div>
+
+      <section class="scoreboard" aria-label="战况">
+        <div class="score-card score-red">
+          <span class="score-team">红队</span>
+          <strong id="redScore">0/9</strong>
+        </div>
+        <div class="turn-card">
+          <span id="turnBanner">红队回合</span>
+          <span id="phaseHint">等待队长提示</span>
+        </div>
+        <div class="score-card score-blue">
+          <span class="score-team">蓝队</span>
+          <strong id="blueScore">0/8</strong>
+        </div>
+      </section>
+
+      <section class="layout">
+        <aside class="control-column">
+          <div id="captainPanel" class="panel hidden">
+            <div class="panel-heading">
+              <span class="status-dot" aria-hidden="true"></span>
+              <h2 id="controlTitle">红队队长提示</h2>
+            </div>
+
+            <div class="clue-form">
+              <label class="field field-wide" for="clueWord">
+                <span>提示词</span>
+                <input id="clueWord" type="text" maxlength="8" autocomplete="off" placeholder="例：圆">
+              </label>
+              <label class="field" for="clueCount">
+                <span>数量</span>
+                <select id="clueCount" aria-label="提示数量">
+                  <option value="0">0</option>
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                </select>
+              </label>
+              <button id="clueSubmit" class="button button-primary button-block field-wide" type="button">提交提示</button>
+            </div>
+
+            <div class="legend">
+              <span class="legend-item legend-red"><i aria-hidden="true"></i>红方目标</span>
+              <span class="legend-item legend-blue"><i aria-hidden="true"></i>蓝方目标</span>
+              <span class="legend-item legend-bomb"><i aria-hidden="true"></i>炸弹</span>
+              <span class="legend-item legend-neutral"><i aria-hidden="true"></i>无效词</span>
+            </div>
+          </div>
+
+          <div id="memberPanel" class="panel hidden">
+            <div class="panel-heading">
+              <span class="status-dot" aria-hidden="true"></span>
+              <h2>队员翻词</h2>
+            </div>
+            <div class="guess-stats">
+              <div>
+                <span>本回合已翻</span>
+                <strong id="flipProgress">0</strong>
+              </div>
+              <div>
+                <span>可翻上限</span>
+                <strong id="flipLimit">1</strong>
+              </div>
+            </div>
+            <button id="passBtn" class="button button-ghost button-block" type="button" disabled>弃权 / 结束回合</button>
+          </div>
+
+          <div class="panel event-panel">
+            <div class="panel-heading">
+              <h2>双方提示</h2>
+            </div>
+            <div class="clue-log">
+              <div class="clue-column clue-column-red">
+                <h3>红队提示</h3>
+                <ol id="redClueLog" class="event-list"></ol>
+              </div>
+              <div class="clue-column clue-column-blue">
+                <h3>蓝队提示</h3>
+                <ol id="blueClueLog" class="event-list"></ol>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="board-section" aria-label="词板">
+          <div id="board" class="word-grid"></div>
+          <p id="boardFoot" class="board-foot">红方 9 目标 · 蓝方 8 目标 · 炸弹 1 · 无效 7</p>
+        </section>
+      </section>
+    </section>
+
+    <section id="blocked" class="blocked-panel hidden">
+      <div class="blocked-card">
+        <h2 id="blockedTitle">角色已被占用</h2>
+        <p id="blockedDetail">请关闭另一端后重试。</p>
+        <a class="button button-primary" href="./">返回选择角色</a>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="cluePopup" class="overlay clue-popup-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="cluePopupTag">
+    <div class="clue-popup-card">
+      <span id="cluePopupTag" class="clue-popup-tag">红队提示词</span>
+      <strong id="cluePopupWord" class="clue-popup-word"></strong>
+      <span id="cluePopupCount" class="clue-popup-meta"></span>
+      <span id="cluePopupLimit" class="clue-popup-meta"></span>
+      <button id="cluePopupClose" class="button button-primary" type="button">开始翻词</button>
+    </div>
+  </div>
+
+  <div id="winnerOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="winnerTitle">
+    <div class="winner-card">
+      <span class="winner-crown" aria-hidden="true">◆ ◆ ◆</span>
+      <h2 id="winnerTitle">红队胜利</h2>
+      <p id="winnerDetail">目标词已全部翻开</p>
+      <div class="winner-actions">
+        <button id="closeWinnerBtn" class="button button-primary" type="button">查看完整词板</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
